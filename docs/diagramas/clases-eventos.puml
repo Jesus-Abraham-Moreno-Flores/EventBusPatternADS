@@ -1,0 +1,60 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 14
+hide empty members
+title Clases: bus y datos inmutables
+class EventBus {
+  - suscriptores: Map<Class<?>, List<Registro<?>>>
+  + suscribir<T>(tipo: Class<T>, suscriptor: Consumer<T>): void
+  + desuscribir<T>(tipo: Class<T>, suscriptor: Consumer<T>): void
+  + publicar(evento: Object): void
+}
+class "Registro<T>" as Registro <<record privado>> {
+  tipo: Class<T>
+  suscriptor: Consumer<T>
+  notificar(evento: Object): void
+}
+class PedidoRealizadoEvent <<record>> {
+  mesaId: int
+  pedidoId: int
+  items: List<ItemPedido>
+}
+class BebidaServidaEvent <<record>> {
+  mesaId: int
+  bebida: String
+}
+class ComidaPreparadaEvent <<record>> {
+  pedidoId: int
+  plato: String
+}
+class BandaTocandoEvent <<record>> {
+  nombreBanda: String
+  nombreCancion: String
+  duracion: int
+}
+class ItemPedido <<record>> {
+  nombre: String
+  tipo: TipoItem
+}
+enum TipoItem {
+  BEBIDA
+  COMIDA
+}
+EventBus "1" *-- "0..*" Registro
+PedidoRealizadoEvent "1" *-- "1..*" ItemPedido
+ItemPedido --> TipoItem
+EventBus -[hidden]down- PedidoRealizadoEvent
+PedidoRealizadoEvent -[hidden]right- BebidaServidaEvent
+BebidaServidaEvent -[hidden]right- ComidaPreparadaEvent
+ComidaPreparadaEvent -[hidden]right- BandaTocandoEvent
+note bottom of EventBus
+  Registro por clase exacta; no depende
+  de eventos ni componentes concretos.
+end note
+note bottom of PedidoRealizadoEvent
+  List.copyOf(items) evita cambios externos.
+  Los records contienen datos inmutables.
+end note
+@enduml

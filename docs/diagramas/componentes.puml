@@ -1,0 +1,32 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam defaultFontSize 14
+title Componentes: comunicacion exclusiva mediante el bus
+component SistemaDePedidos as Pedidos
+component Barra
+component Cocina
+component Banda
+component EventBus as Bus
+component PanelLED as LED
+component SistemaDeSonido as Sonido
+component SistemaDeHumo as Humo
+component HistorialMusical as Historial
+Pedidos --> Bus : publica PedidoRealizado
+Bus --> Barra : entrega PedidoRealizado
+Barra --> Bus : publica BebidaServida
+Bus --> Cocina : entrega PedidoRealizado
+Cocina --> Bus : publica ComidaPreparada
+Banda --> Bus : publica BandaTocando
+Bus --> LED : entrega los 4 tipos
+Bus --> Sonido : entrega BandaTocando
+Bus --> Humo : entrega BandaTocando\nsolo mientras esta suscrito
+Bus --> Historial : entrega BandaTocando
+note bottom of Bus
+  Nombres abreviados: cada evento termina en Event.
+  Todos los receptores se registran por tipo.
+  Main ensambla el sistema; Salida imprime mensajes.
+  El planificador difiere preparaciones y anuncios.
+end note
+@enduml

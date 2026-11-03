@@ -1,0 +1,25 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 14
+title Secuencia: preparacion del pedido en paralelo
+participant Main
+participant SistemaDePedidos as Pedidos
+participant EventBus as Bus
+participant PanelLED as LED
+participant Barra
+participant Cocina
+participant "ScheduledExecutorService" as Reloj
+Main -> Pedidos : realizarPedido(5, 123, [Cerveza, Hamburguesa])
+Pedidos -> Bus : publicar(PedidoRealizadoEvent)
+Bus -> LED : notificar pedido
+Bus -> Barra : notificar pedido
+Barra -> Reloj : programar bebida (+2 s)
+Bus -> Cocina : notificar pedido
+Cocina -> Reloj : programar comida (+5 s)
+note over Bus, Reloj : Preparaciones pendientes en paralelo
+Reloj -> Bus : t = 2 s: publicar(BebidaServidaEvent)
+Bus -> LED : bebida servida, mesa 5
+Reloj -> Bus : t = 5 s: publicar(ComidaPreparadaEvent)
+Bus -> LED : comida lista, pedido 123
+note over Main, Reloj : El pedido 124 repite el recorrido desde t = 1 s.
+@enduml

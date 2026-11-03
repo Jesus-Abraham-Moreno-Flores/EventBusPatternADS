@@ -1,5 +1,7 @@
 param([switch]$Pruebas, [switch]$SinColor)
 $ErrorActionPreference = 'Stop'
+$codificacionOriginal = [Console]::OutputEncoding
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 Push-Location $PSScriptRoot
 try {
     $javac = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME 'bin/javac.exe' } else { (Get-Command javac).Source }
@@ -12,13 +14,14 @@ try {
     & $javac -encoding UTF-8 --release 21 -d build/classes $fuentes
     if ($LASTEXITCODE -ne 0) { throw 'No se pudo compilar el proyecto' }
     if ($Pruebas) {
-        & $java '-Dfile.encoding=UTF-8' -cp build/classes taberna.Pruebas
+        & $java '-Dfile.encoding=UTF-8' '-Dstdout.encoding=UTF-8' '-Dstderr.encoding=UTF-8' -cp build/classes taberna.Pruebas
     } elseif ($SinColor) {
-        & $java '-Dfile.encoding=UTF-8' -cp build/classes taberna.Main --sin-color
+        & $java '-Dfile.encoding=UTF-8' '-Dstdout.encoding=UTF-8' '-Dstderr.encoding=UTF-8' -cp build/classes taberna.Main --sin-color
     } else {
-        & $java '-Dfile.encoding=UTF-8' -cp build/classes taberna.Main
+        & $java '-Dfile.encoding=UTF-8' '-Dstdout.encoding=UTF-8' '-Dstderr.encoding=UTF-8' -cp build/classes taberna.Main
     }
     if ($LASTEXITCODE -ne 0) { throw 'La ejecución terminó con errores' }
 } finally {
+    [Console]::OutputEncoding = $codificacionOriginal
     Pop-Location
 }

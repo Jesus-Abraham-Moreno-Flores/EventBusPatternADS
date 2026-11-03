@@ -1,0 +1,34 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontSize 15
+title Secuencia: musica y extensiones dinamicas
+participant "Main / tarea\nprogramada por Main" as Main
+participant Banda
+participant EventBus as Bus
+participant PanelLED as LED
+participant SistemaDeSonido as Sonido
+participant SistemaDeHumo as Humo
+participant HistorialMusical as Historial
+Main -> Banda : iniciar(planificador)
+note over Banda : Anuncia cada 4 s mediante una tarea programada.
+Banda -> Bus : t = 0 s: cancion normal
+Bus -> LED : anunciar cancion
+Bus -> Sonido : ajustar ecualizador
+Main -> Humo : t = 3 s: activar()
+Humo -> Bus : suscribir(BandaTocandoEvent, receptor)
+Main -> Historial : crear(bus, salida)
+Historial -> Bus : suscribir(BandaTocandoEvent, receptor)
+Banda -> Bus : t = 4 s: cancion epica
+Bus -> LED : anunciar cancion
+Bus -> Sonido : ajustar ecualizador
+Bus -> Humo : activar efectos
+Bus -> Historial : contar anuncio
+note over Banda, Historial : t = 8 s: cancion normal; humo recibe, pero no activa efectos.
+Main -> Humo : t = 10 s: desactivar()
+Humo -> Bus : desuscribir(BandaTocandoEvent, receptor)
+Banda -> Bus : t = 12 s: cancion epica
+Bus -> LED : anunciar cancion
+Bus -> Sonido : ajustar ecualizador
+Bus -> Historial : contar anuncio
+note over Bus, Humo : El humo ya no recibe el evento.
+@enduml

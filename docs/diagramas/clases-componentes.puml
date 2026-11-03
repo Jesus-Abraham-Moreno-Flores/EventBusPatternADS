@@ -1,0 +1,55 @@
+@startuml
+!pragma layout smetana
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 14
+hide empty members
+title Clases: componentes independientes
+class Main {
+  + {static} main(args: String[]): void
+}
+class EventBus
+class SistemaDePedidos {
+  + realizarPedido(mesaId, pedidoId, items): void
+}
+class Barra {
+  - preparar(pedido): void
+}
+class Cocina {
+  - preparar(pedido): void
+}
+class Banda {
+  + iniciar(planificador): ScheduledFuture<?>
+}
+class SistemaDeSonido
+class PanelLED
+class SistemaDeHumo {
+  - receptor: Consumer<BandaTocandoEvent>
+  + activar(): void
+  + desactivar(): void
+}
+class HistorialMusical
+interface ScheduledExecutorService
+class Salida {
+  + mostrar(componente, mensaje): void
+}
+Main .right.> EventBus : crea
+SistemaDePedidos -right-> EventBus
+Barra -right-> EventBus
+Cocina -right-> EventBus
+Banda -right-> EventBus
+SistemaDeSonido .left.> EventBus : suscribe
+PanelLED .left.> EventBus : suscribe
+SistemaDeHumo -left-> EventBus
+HistorialMusical .left.> EventBus : suscribe
+Main .down.> ScheduledExecutorService : crea
+ScheduledExecutorService -[hidden]down- Salida
+note bottom of Salida
+  Todos los componentes usan Salida.
+  Main instancia y conecta los componentes.
+  Barra, Cocina y Banda usan el planificador.
+  Main activa y desactiva SistemaDeHumo.
+  No hay referencias entre componentes.
+end note
+@enduml

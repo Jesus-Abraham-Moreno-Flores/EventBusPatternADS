@@ -30,6 +30,16 @@ public final class Main {
                     new ItemPedido("Cerveza", TipoItem.BEBIDA),
                     new ItemPedido("Hamburguesa", TipoItem.COMIDA)));
             musica = banda.iniciar(planificador);
+            SistemaDeHumo humo = new SistemaDeHumo(bus, salida);
+            planificador.schedule(() -> {
+                humo.activar();
+                new HistorialMusical(bus, salida);
+                salida.mostrar("TABERNA", "Humo e historial suscritos durante la ejecución");
+            }, 3, TimeUnit.SECONDS);
+            planificador.schedule(() -> {
+                humo.desactivar();
+                salida.mostrar("TABERNA", "Humo desuscrito: la siguiente canción épica no lo activará");
+            }, 10, TimeUnit.SECONDS);
             planificador.schedule(() -> pedidos.realizarPedido(2, 124, List.of(
                     new ItemPedido("Agua", TipoItem.BEBIDA),
                     new ItemPedido("Pizza", TipoItem.COMIDA))), 1, TimeUnit.SECONDS);

@@ -12,6 +12,8 @@ import taberna.bus.EventBus;
 import taberna.componentes.Barra;
 import taberna.componentes.Cocina;
 import taberna.componentes.SistemaDePedidos;
+import taberna.componentes.SistemaDeHumo;
+import taberna.eventos.BandaTocandoEvent;
 import taberna.eventos.BebidaServidaEvent;
 import taberna.eventos.ComidaPreparadaEvent;
 import taberna.eventos.PedidoRealizadoEvent;
@@ -27,7 +29,8 @@ public final class Pruebas {
         publicacionesConcurrentes();
         eventosInmutables();
         preparacionEnParalelo();
-        System.out.println("OK: 6 pruebas completadas");
+        humoDinamico();
+        System.out.println("OK: 7 pruebas completadas");
     }
 
     private static void verificar(boolean condicion, String mensaje) {
@@ -107,6 +110,29 @@ public final class Pruebas {
         } catch (UnsupportedOperationException esperado) {
             // El evento conserva una lista inmutable de productos inmutables.
         }
+    }
+
+    private static void humoDinamico() throws Exception {
+        java.io.ByteArrayOutputStream mensajes = new java.io.ByteArrayOutputStream();
+        java.io.PrintStream consola = System.out;
+        try (var captura = new java.io.PrintStream(mensajes, true, java.nio.charset.StandardCharsets.UTF_8)) {
+            System.setOut(captura);
+            EventBus bus = new EventBus();
+            SistemaDeHumo humo = new SistemaDeHumo(bus, new Salida(false));
+            BandaTocandoEvent epica = new BandaTocandoEvent("Banda", "Through the Fire and Flames", 440);
+            bus.publicar(epica);
+            humo.activar();
+            humo.activar();
+            bus.publicar(new BandaTocandoEvent("Banda", "El Algoritmo del Amor", 180));
+            bus.publicar(epica);
+            humo.desactivar();
+            bus.publicar(epica);
+        } finally {
+            System.setOut(consola);
+        }
+        String texto = mensajes.toString(java.nio.charset.StandardCharsets.UTF_8);
+        verificar(texto.lines().count() == 1 && texto.contains("Through the Fire and Flames"),
+                "El humo debe reaccionar solo una vez mientras está suscrito");
     }
 
     private static void preparacionEnParalelo() throws Exception {

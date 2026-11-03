@@ -1,0 +1,32 @@
+[ 0.03 s] [TABERNA   ] El Gólem Alquímico abre sus puertas
+[ 0.06 s] [PEDIDOS   ] Pedido 123 de la mesa 5
+[ 0.06 s] [PANEL LED ] Nuevo pedido 123 en la mesa 5
+[ 0.07 s] [BARRA     ] Preparando Cerveza para mesa 5
+[ 0.07 s] [COCINA    ] Preparando Hamburguesa del pedido 123
+[ 0.08 s] [BANDA     ] Tocando: El Algoritmo del Amor
+[ 0.09 s] [PANEL LED ] Los Seguidores de Dijkstra: El Algoritmo del Amor (180 s)
+[ 0.09 s] [SONIDO    ] Ajustando ecualizador para: El Algoritmo del Amor
+[ 1.10 s] [PEDIDOS   ] Pedido 124 de la mesa 2
+[ 1.10 s] [PANEL LED ] Nuevo pedido 124 en la mesa 2
+[ 1.10 s] [BARRA     ] Preparando Agua para mesa 2
+[ 1.10 s] [COCINA    ] Preparando Pizza del pedido 124
+[ 2.08 s] [PANEL LED ] ¡Cerveza servida en la mesa 5!
+[ 3.10 s] [TABERNA   ] Humo e historial suscritos durante la ejecución
+[ 3.11 s] [PANEL LED ] ¡Agua servida en la mesa 2!
+[ 4.09 s] [BANDA     ] Tocando: Through the Fire and Flames
+[ 4.09 s] [PANEL LED ] Los Seguidores de Dijkstra: Through the Fire and Flames (440 s)
+[ 4.09 s] [SONIDO    ] Ajustando ecualizador para: Through the Fire and Flames
+[ 4.09 s] [HUMO      ] ¡Efectos de humo para: Through the Fire and Flames!
+[ 4.10 s] [HISTORIAL ] Canción 1: Through the Fire and Flames
+[ 5.08 s] [PANEL LED ] ¡Hamburguesa lista! Pedido 123
+[ 6.10 s] [PANEL LED ] ¡Pizza lista! Pedido 124
+[ 8.08 s] [BANDA     ] Tocando: El Algoritmo del Amor
+[ 8.08 s] [PANEL LED ] Los Seguidores de Dijkstra: El Algoritmo del Amor (180 s)
+[ 8.09 s] [SONIDO    ] Ajustando ecualizador para: El Algoritmo del Amor
+[ 8.09 s] [HISTORIAL ] Canción 2: El Algoritmo del Amor
+[10.09 s] [TABERNA   ] Humo desuscrito: la siguiente canción épica no lo activará
+[12.08 s] [BANDA     ] Tocando: Through the Fire and Flames
+[12.08 s] [PANEL LED ] Los Seguidores de Dijkstra: Through the Fire and Flames (440 s)
+[12.08 s] [SONIDO    ] Ajustando ecualizador para: Through the Fire and Flames
+[12.08 s] [HISTORIAL ] Canción 3: Through the Fire and Flames
+[14.09 s] [TABERNA   ] Simulación finalizada
